@@ -29,13 +29,12 @@ class Twitter {
                 data.forEach(this.tweets.addPost);
                 this.showAllPost();
             });
-            // console.log('this.tweets:', this.tweets);
     }
     //отрисовка постов
     renderPosts(tweets) {
         //очищаем содержимое предыдущей ленты
         this.elements.listElem.textContent = '';
-        tweets.forEach(({id, userName, nickname, postDate, text, img, likes = 0}) => {
+        tweets.forEach(({id, userName, nickname, text, img, likes, getDate = 0}) => {
             this.elements.listElem.insertAdjacentHTML('beforeend', `
             <li>
                 <article class="tweet">
@@ -45,7 +44,7 @@ class Twitter {
                             <header class="tweet__header">
                                 <h3 class="tweet-author">${userName}
                                     <span class="tweet-author__add tweet-author__nickname">@${nickname}</span>
-                                    <time class="tweet-author__add tweet__date">${postDate}</time>
+                                    <time class="tweet-author__add tweet__date">${getDate()}</time>
                                 </h3>
                                 <button class="tweet__delete-button chest-icon" data-id="${id}"></button>
                             </header>
@@ -88,7 +87,7 @@ class Posts {
         this.posts = posts;
     }
     addPost = (tweets) => {
-        this.posts.push(tweets);
+        this.posts.push(new Post(tweets));
     }
     deletePost(id) {
 
@@ -120,7 +119,7 @@ class Post {
         // + - translate Date to Int
         return (Math.random().toString(16).substring(2,9) + (+new Date).toString(16));
     }
-    getDate() {
+    getDate = () => {
         const options = {
             year: 'numeric',
             month: 'numeric',
@@ -136,12 +135,3 @@ const twitter = new Twitter({
     listElem: '.tweet-list'
 });
 
-// twitter.tweets.addPost({
-//     userName: 'Артем',
-//     nickname: 'Artem', 
-//     postDate: '2021-01-21', 
-//     text: 'Test',
-//     img: '',
-//     likes: '20',
-//     liked: '1',
-// });
